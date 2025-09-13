@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Desktop</title>
+<link rel="stylesheet" href="style.css">
+<!-- xterm.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
+<script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+</head>
+<body>
+  <div id="desktop">
+    <div class="window" id="editorWindow">
+      <div class="titlebar">Editor de Texto</div>
+      <textarea id="editor"></textarea>
+    </div>
+
+    <div class="window" id="terminalWindow">
+      <div class="titlebar">Terminal Linux</div>
+      <div id="terminal"></div>
+    </div>
+
+    <div id="taskbar">Web Desktop</div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
