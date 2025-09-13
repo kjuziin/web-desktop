@@ -1,127 +1,65 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Ubuntu', sans-serif;
-  overflow: hidden;
+// Arrastar janelas
+function dragElement(elmnt) {
+  let pos1=0,pos2=0,pos3=0,pos4=0;
+  const header = elmnt.querySelector(".titlebar");
+  if(header) header.onmousedown = dragMouseDown;
+  else elmnt.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e){
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX; pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e){
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX; pos4 = e.clientY;
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement(){
+    document.onmouseup=null;
+    document.onmousemove=null;
+  }
 }
 
-#desktop {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #772953, #dd4814);
-  position: relative;
+['editorWindow','terminalWindow','browserWindow'].forEach(id => dragElement(document.getElementById(id)));
+
+// Abrir ou trazer para frente
+function toggleWindow(id){
+  const w = document.getElementById(id);
+  if(w.style.display === 'none') w.style.display='block';
+  w.style.zIndex = Date.now();
 }
 
-/* Barra superior */
-#topbar {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 40px;
-  background: rgba(20,20,20,0.9);
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 16px;
+// Minimizar
+function minimizeWindow(id){
+  document.getElementById(id).style.display='none';
 }
 
-/* Launcher inferior */
-#launcher {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  box-sizing: border-box;
+// Relógio barra superior
+function updateClock(){
+  document.getElementById('clock').innerText = new Date().toLocaleTimeString();
 }
+setInterval(updateClock,1000);
 
-.app-icon {
-  font-size: 28px;
-  margin-right: 10px;
-  cursor: pointer;
-}
+// Inicializa terminal
+const term = new Terminal();
+term.open(document.getElementById('terminal'));
+term.write('Bem-vindo ao Ubuntu Web Terminal!\r\n$ ');
 
-/* Janela */
-.window {
-  width: 320px;
-  height: 220px;
-  background: #eee;
-  border-radius: 8px;
-  border: 2px solid #444;
-  position: absolute;
-  top: 60px;
-  left: 60px;
-  box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
-  overflow: hidden;
-  display: block;
-  resize: both;
-}
-
-/* Título e botão */
-.titlebar {
-  background: #772953;
-  color: #fff;
-  padding: 5px;
-  cursor: move;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.window-btn {
-  background: #444;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-}
-
-/* Editor */
-textarea {
-  width: 100%;
-  height: calc(100% - 30px);
-  border: none;
-  resize: none;
-  padding: 5px;
-  box-sizing: border-box;
-  font-family: 'Ubuntu', monospace;
-  font-size: 14px;
-}
-
-/* Terminal */
-#terminal {
-  width: 100%;
-  height: calc(100% - 30px);
-  background: #000;
-  color: #00ff00;
-  font-family: monospace;
-  font-size: 14px;
-}
-
-/* Navegador */
-#browserWindow input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 5px;
-  border: none;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 14px;
-}
-
-#browserFrame {
-  width: 100%;
-  height: calc(100% - 60px);
-  border: none;
-}
+// Navegador: abrir URL digitada
+const browserUrl = document.getElementById('browserUrl');
+browserUrl.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){
+    const url = browserUrl.value;
+    const iframe = document.getElementById('browserFrame');
+    iframe.src = url.startsWith('http') ? url : 'https://' + url;
+  }
+});
