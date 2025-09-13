@@ -3,28 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Desktop</title>
+<title>Ubuntu Web Desktop Avançado</title>
 <link rel="stylesheet" href="style.css">
-<!-- xterm.js -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
 <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="desktop">
+    <!-- Barra superior -->
+    <div id="topbar">
+      <div id="menu">Ubuntu Web Desktop</div>
+      <div id="clock"></div>
+    </div>
+
+    <!-- Janela Editor -->
     <div class="window" id="editorWindow">
-      <div class="titlebar">Editor de Texto</div>
+      <div class="titlebar">
+        Editor de Texto
+        <button class="window-btn" onclick="minimizeWindow('editorWindow')">_</button>
+      </div>
       <textarea id="editor"></textarea>
     </div>
 
+    <!-- Janela Terminal -->
     <div class="window" id="terminalWindow">
-      <div class="titlebar">Terminal Linux</div>
+      <div class="titlebar">
+        Terminal
+        <button class="window-btn" onclick="minimizeWindow('terminalWindow')">_</button>
+      </div>
       <div id="terminal"></div>
     </div>
 
-    <div id="taskbar">Web Desktop</div>
+    <!-- Janela Navegador -->
+    <div class="window" id="browserWindow">
+      <div class="titlebar">
+        Navegador
+        <button class="window-btn" onclick="minimizeWindow('browserWindow')">_</button>
+      </div>
+      <input type="text" id="browserUrl" placeholder="Digite a URL e pressione Enter" />
+      <iframe id="browserFrame" src="https://www.google.com"></iframe>
+    </div>
+
+    <!-- Launcher -->
+    <div id="launcher">
+      <div class="app-icon" onclick="toggleWindow('editorWindow')">📝</div>
+      <div class="app-icon" onclick="toggleWindow('terminalWindow')">💻</div>
+      <div class="app-icon" onclick="toggleWindow('browserWindow')">🌐</div>
+    </div>
   </div>
 
 <script src="script.js"></script>
 </body>
 </html>
-
